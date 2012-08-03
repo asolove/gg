@@ -139,6 +139,26 @@
             };
         });
     }());
+    
+    gg.sampleData.forBarChart = (function () {
+        var groups = [ "Women", "Men" ];
+        var seasons = [ "Spring", "Summer", "Fall", "Winter" ];
+        var random = d3.random.normal(500, 100);
+        
+        function mapXProd (as, bs, f) {
+            return _.flatten(_.map(as, function (a) {
+                return _.map(bs, function (b) { return f(a, b); });
+            }));
+        }
+        
+        return mapXProd(groups, seasons, function(group, season){
+            return {
+                group: group,
+                season: season,
+                number: Math.floor(Math.max(0, random()))
+            };
+        });
+    })();
 
 
 })(window);

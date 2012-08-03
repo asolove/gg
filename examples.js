@@ -16,7 +16,8 @@
         });
 
         var barchart = gg({
-            layers: [{ geometry: 'interval', mapping: { x: 'd', y: 'r' }, color: 'blue', width: 2 }]
+            layers: [{ geometry: 'interval', mapping: { x: 'season', y: 'number', color: "group" } }],
+            scales: [{ type: 'categorical', aesthetic: 'x' }]
         });
 
         var histogram = gg({
@@ -99,7 +100,7 @@
 
         linechart.render(w, h, ex(), data.upward);
         combined.render(w, h, ex(), data.upward);
-        barchart.render(w, h, ex(), data.upward);
+        barchart.render(w, h, ex(), data.forBarChart);
         quadrants.render(w, h, ex(), data.quadrants);
         histogram.render(w, h, ex(), data.purchases);
         semilog.render(w, h, ex(), data.semiLogData);
