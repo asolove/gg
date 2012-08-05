@@ -115,7 +115,8 @@
             point: PointGeometry,
             line: LineGeometry,
             interval: IntervalGeometry,
-            box: BoxPlotGeometry
+            box: BoxPlotGeometry,
+            bar: BarGeometry
         }[spec.geometry || 'point'](spec);
 
         var layer = new Layer(geometry, graphic);
@@ -374,6 +375,34 @@
     };
 
 
+    function BarGeometry (spec) {
+        this.width = spec.width;
+        this.color = spec.color || 'black';
+    }
+
+    BarGeometry.prototype = new Geometry();
+
+    BarGeometry.prototype.render = function (svg, data) {
+        var layer = this.layer;
+        var width = this.width || layer.graphic.width / data.length;
+
+        function scale (d, aesthetic) { return layer.scaledValue(d, aesthetic); }
+        function pos_scale(d, aesthetic){
+            debugger;
+            return 10;
+        }
+
+        svg.append('g').selectAll('rect')
+            .data(data)
+            .enter()
+            .append('rect')
+            .attr('x', function (d) { return scale(d, 'x') - width/2 + pos_scale(d, 'group'); })
+            .attr('y', function (d) { return scale(d, 'y'); })
+            .attr('width', width)
+            .attr('height', function (d) { return layer.scaledMin('y') - scale(d, 'y'); })
+            .attr('fill', attributeValue(layer, 'color', this.color));
+    };
+
 
     ////////////////////////////////////////////////////////////////////////
     // Scales -- a scale is used to map from data values to aesthetic
@@ -389,7 +418,8 @@
             linear:      LinearScale,
             log:         LogScale,
             categorical: CategoricalScale,
-            color:       ColorScale
+            color:       ColorScale,
+            group:       GroupScale
         }[spec.type || 'linear'];
 
         spec.aesthetic !== undefined && (s.aesthetic = spec.aesthetic);

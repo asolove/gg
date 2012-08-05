@@ -16,7 +16,7 @@
         });
 
         var barchart = gg({
-            layers: [{ geometry: 'interval', mapping: { x: 'season', y: 'number', color: "group" } }],
+            layers: [{ geometry: 'bar', mapping: { x: 'season', y: 'number', color: "group" } }],
             scales: [{ type: 'categorical', aesthetic: 'x' }]
         });
 
